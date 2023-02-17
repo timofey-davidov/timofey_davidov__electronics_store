@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "electronics-store"
+version = "0.1.0"
+description = ""
+authors = ["timofey-davidov <timofeydavidov95@gmail.com>"]
+readme = "README.md"
+packages = [{include = "electronics_store"}]
+
+[tool.poetry.dependencies]
+python = "3.11"
+pytest = "^7.2.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
