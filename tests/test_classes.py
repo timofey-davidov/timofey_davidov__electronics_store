@@ -24,19 +24,23 @@ def item4():
 
 def test_Item(item1, item2):
     assert len(Item.all) == 2
-    assert item1.calculate_total_price() == 200000
-    assert item2.calculate_total_price() == 100000
+    assert item1.calculate_total_price() == 200_000
+    assert item2.calculate_total_price() == 100_000
     item1.apply_discount()
     item2.apply_discount()
-    assert item1.price == 8000
-    assert item2.price == 16000
-    assert Item.all[0].price == 8000
+    assert item1.price == 8_000
+    assert item2.price == 16_000
+    assert Item.all[0].price == 8_000
+
+def test_Item_repr_str(item1):
+    assert item1.__repr__() == 'Item(Смартфон, 10000, 20)'
+    assert item1.__str__() == "Смартфон"
 
 
 def test_instantiate_from_csv():
-    assert len(Item.all) == 2
+    assert len(Item.all) == 3
     Item.instantiate_from_csv()
-    assert len(Item.all) == 7
+    assert len(Item.all) == 8
 
 
 def test_is_integer():

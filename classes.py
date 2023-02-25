@@ -18,7 +18,6 @@ class Item:
             raise Exception(
                 "Длина наименования товара превышает 10 символов.")
 
-        self.__name = name
         self.price = price
         self.item_count = item_count
         if all([type(self.__name) == str,
@@ -28,6 +27,12 @@ class Item:
         else:
             print(
                 f"Проверьте типы данных вводимых аргументов для объекта с именем '{self.__name}'")
+
+    def __repr__(self):
+        return f"Item({self.__name}, {self.price}, {self.item_count})"
+
+    def __str__(self):
+        return self.__name
 
     def calculate_total_price(self):
         """
