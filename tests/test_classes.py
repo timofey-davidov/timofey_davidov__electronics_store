@@ -1,5 +1,5 @@
 import pytest
-from classes import Item
+from classes import Item, Phone
 
 
 @pytest.fixture
@@ -20,6 +20,14 @@ def item3():
 @pytest.fixture
 def item4():
     return Item("СуперПуперНоутбук", 20000, 5)
+
+@pytest.fixture
+def item5():
+    return Phone("iPhone 14", 120_000, 5, 2)
+
+@pytest.fixture
+def item6():
+    return Phone("Xiaomi 12t", 38_000, 11, 1)
 
 
 def test_Item(item1, item2):
@@ -47,3 +55,9 @@ def test_is_integer():
     assert Item.is_integer(5) == True
     assert Item.is_integer(5.0) == True
     assert Item.is_integer(7.5) == False
+
+def test_Phone(item5, item6):
+    assert item5.__str__() == "iPhone 14"
+    assert item6.__repr__() == "Phone(Xiaomi 12t, 38000, 11, 1)"
+    assert item5 + item6 == 16
+    assert item6 + 100 == None
