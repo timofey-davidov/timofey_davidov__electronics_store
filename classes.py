@@ -13,26 +13,26 @@ class Item:
 
         # часть кода конструктора, проверяющая, что длина имени товара, вводимая в первый раз, не превышает 10 символов
         if len(name) <= 10:
-            self.__name = name
+            self._name = name
         else:
             raise Exception(
                 "Длина наименования товара превышает 10 символов.")
 
         self.price = price
         self.item_count = item_count
-        if all([type(self.__name) == str,
+        if all([type(self._name) == str,
                 type(self.price) in (int, float),
                 type(self.item_count) == int]):
             Item.all.append(self)
         else:
             print(
-                f"Проверьте типы данных вводимых аргументов для объекта с именем '{self.__name}'")
+                f"Проверьте типы данных вводимых аргументов для объекта с именем '{self._name}'")
 
     def __repr__(self):
-        return f"Item({self.__name}, {self.price}, {self.item_count})"
+        return f"Item({self._name}, {self.price}, {self.item_count})"
 
     def __str__(self):
-        return self.__name
+        return self._name
 
     def calculate_total_price(self):
         """
@@ -50,25 +50,21 @@ class Item:
 
     @property
     def name(self):
-        return self.__name
+        return self._name
 
     @name.setter
     def name(self, value):
         if len(value) <= 10:
-            self.__name = value
+            self._name = value
         else:
-            raise Exception(
-                "Длина наименования товара превышает 10 символов.")
+            raise Exception("Длина наименования товара превышает 10 символов.")
 
     @classmethod
-    def instantiate_from_csv(cls,
-                             path="database/items.csv"):
+    def instantiate_from_csv(cls, path="database/items.csv"):
         with open(path) as file:
             file = csv.DictReader(file)
             for row in file:
-                item = cls(name=row["name"],
-                           price=float(row["price"]),
-                           item_count=int(row["quantity"]))
+                item = cls(name=row["name"], price=float(row["price"]), item_count=int(row["quantity"]))
 
     @staticmethod
     def is_integer(value):
@@ -76,3 +72,37 @@ class Item:
                 value % 1 == 0]):
             return True
         return False
+
+    def __add__(self, other):
+        if isinstance(self, Item) and isinstance(other, Item):
+            return self.item_count + other.item_count
+
+class Phone(Item):
+    def __init__(self, name: str, price: (int, float), item_count: int, number_of_sim: int = 1):
+        super().__init__(name, price, item_count)
+        if number_of_sim <= 0:
+            raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
+        else:
+            self._number_of_sim = number_of_sim
+
+    def __repr__(self):
+        return f"Phone({self._name}, {self.price}, {self.item_count}, {self._number_of_sim})"
+    
+    def __str__(self):
+        return super().__str__()
+
+    def __add__(self, other):
+        if isinstance(self, (Phone, Item)) and isinstance(other, (Phone, Item)):
+            return self.item_count + other.item_count
+
+    @property
+    def number_of_sim(self):
+        return self._number_of_sim
+
+    @number_of_sim.setter
+    def number_of_sim(self, value):
+        if value < 1:
+            raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
+        else:
+            self._number_of_sim = value
+
