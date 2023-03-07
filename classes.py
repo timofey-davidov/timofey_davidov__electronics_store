@@ -80,10 +80,7 @@ class Item:
 class Phone(Item):
     def __init__(self, name: str, price: (int, float), item_count: int, number_of_sim: int = 1):
         super().__init__(name, price, item_count)
-        if number_of_sim <= 0:
-            raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
-        else:
-            self._number_of_sim = number_of_sim
+        self._number_of_sim = number_of_sim
 
     def __repr__(self):
         return f"Phone({self._name}, {self.price}, {self.item_count}, {self._number_of_sim})"
@@ -100,9 +97,8 @@ class Phone(Item):
         return self._number_of_sim
 
     @number_of_sim.setter
-    def number_of_sim(self, value):
-        if value < 1:
+    def number_of_sim(self, value: int):
+        if not isinstance(value, int) or value < 1:
             raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
-        else:
-            self._number_of_sim = value
+        self._number_of_sim = value
 
