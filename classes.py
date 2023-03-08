@@ -81,10 +81,14 @@ class Item:
 class Phone(Item):
     def __init__(self, name: str, price: (int, float), item_count: int, number_of_sim: int = 1):
         super().__init__(name, price, item_count)
-        if number_of_sim < 1:
-            raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
-        else:
+        if self.check_numbers_of_sim(number_of_sim):
             self._number_of_sim = number_of_sim
+
+    @staticmethod
+    def check_numbers_of_sim(value):
+        if not isinstance(value, int) or value < 1:
+            raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
+        return True
 
     def __repr__(self):
         return f"Phone({self._name}, {self.price}, {self.item_count}, {self._number_of_sim})"
@@ -102,8 +106,7 @@ class Phone(Item):
 
     @number_of_sim.setter
     def number_of_sim(self, value: int):
-        if not isinstance(value, int) or value < 1:
-            raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
+        self.check_numbers_of_sim(value)
         self._number_of_sim = value
 
 class MixinKeyBoard:
@@ -115,12 +118,15 @@ class MixinKeyBoard:
     def language(self):
         return self._language
 
+    @staticmethod
+    def check_language(value):
+        if value.lower() not in ("ru", "en"):
+            raise AttributeError("Язык должен быть EN или RU")
+        return True
     @language.setter
     def language(self, value):
-        if value.lower() in ("ru", "en"):
+        if self.check_language(value):
             self._language = value
-        else:
-            raise AttributeError("Язык должен быть EN или RU")
 
     def change_lang(self):
         if self.language == "EN":
