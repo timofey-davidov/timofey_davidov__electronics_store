@@ -1,5 +1,5 @@
 import pytest
-from classes import Item, Phone
+from classes import Item, Phone, KeyBoard, MixinKeyBoard
 
 
 @pytest.fixture
@@ -28,6 +28,10 @@ def item5():
 @pytest.fixture
 def item6():
     return Phone("Xiaomi 12t", 38_000, 11, 1)
+
+@pytest.fixture
+def item7():
+    return KeyBoard('Dark KD87A', 9600, 5)
 
 
 def test_Item(item1, item2):
@@ -61,3 +65,9 @@ def test_Phone(item5, item6):
     assert item6.__repr__() == "Phone(Xiaomi 12t, 38000, 11, 1)"
     assert item5 + item6 == 16
     assert item6 + 100 == None
+
+def test_KeyBoard(item7):
+    assert item7.__str__() == "Dark KD87A"
+    assert item7.language == "EN"
+    item7.change_lang()
+    assert item7.language == "RU"
