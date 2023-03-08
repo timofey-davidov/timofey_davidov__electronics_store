@@ -77,14 +77,18 @@ class Item:
         if isinstance(self, Item) and isinstance(other, Item):
             return self.item_count + other.item_count
 
+
 class Phone(Item):
     def __init__(self, name: str, price: (int, float), item_count: int, number_of_sim: int = 1):
         super().__init__(name, price, item_count)
-        self._number_of_sim = number_of_sim
+        if number_of_sim < 1:
+            raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
+        else:
+            self._number_of_sim = number_of_sim
 
     def __repr__(self):
         return f"Phone({self._name}, {self.price}, {self.item_count}, {self._number_of_sim})"
-    
+
     def __str__(self):
         return super().__str__()
 
@@ -102,3 +106,27 @@ class Phone(Item):
             raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
         self._number_of_sim = value
 
+class MixinKeyBoard:
+    def __init__(self, name, price, item_count):
+        self._language = "EN"
+        super().__init__(name, price, item_count)
+
+    @property
+    def language(self):
+        return self._language
+
+    @language.setter
+    def language(self, value):
+        if value.lower() in ("ru", "en"):
+            self._language = value
+        else:
+            raise AttributeError("Язык должен быть EN или RU")
+
+    def change_lang(self):
+        if self.language == "EN":
+            self.language = "RU"
+        else:
+            self.language = "EN"
+class KeyBoard(MixinKeyBoard, Item):
+    def __init__(self, name: str, price: (int, float), item_count: int):
+        super().__init__(name, price, item_count)
