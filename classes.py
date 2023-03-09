@@ -123,16 +123,19 @@ class MixinKeyBoard:
         if value.lower() not in ("ru", "en"):
             raise AttributeError("Язык должен быть EN или RU")
         return True
-    @language.setter
-    def language(self, value):
-        if self.check_language(value):
-            self._language = value
 
     def change_lang(self):
-        if self.language == "EN":
-            self.language = "RU"
+        if self._language == "EN":
+            self._language = "RU"
         else:
-            self.language = "EN"
+            self._language = "EN"
 class KeyBoard(MixinKeyBoard, Item):
     def __init__(self, name: str, price: (int, float), item_count: int):
         super().__init__(name, price, item_count)
+
+if __name__ == '__main__':
+    kb = KeyBoard('Dark KD87A', 9600, 5)
+    print(kb.language)
+    kb.change_lang()
+    print(kb.language)
+    kb.language = 'CH'
