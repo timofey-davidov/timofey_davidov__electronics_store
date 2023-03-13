@@ -61,10 +61,15 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls, path="database/items.csv"):
-        with open(path) as file:
-            file = csv.DictReader(file)
-            for row in file:
-                item = cls(name=row["name"], price=float(row["price"]), item_count=int(row["quantity"]))
+        try:
+            with open(path) as file:
+                file = csv.DictReader(file)
+                for row in file:
+                    item = cls(name=row["name"], price=float(row["price"]), item_count=int(row["quantity"]))
+        except FileNotFoundError:
+            raise FileNotFoundError("Отсутствует файл базы данных (item.csv)")
+        except KeyError:
+            raise InstantiateCSVError('Файл item.csv поврежден')
 
     @staticmethod
     def is_integer(value):
@@ -133,9 +138,9 @@ class KeyBoard(MixinKeyBoard, Item):
     def __init__(self, name: str, price: (int, float), item_count: int):
         super().__init__(name, price, item_count)
 
+class InstantiateCSVError(Exception):
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else 'Файл item.csv поврежден'
+
 if __name__ == '__main__':
-    kb = KeyBoard('Dark KD87A', 9600, 5)
-    print(kb.language)
-    kb.change_lang()
-    print(kb.language)
-    kb.language = 'CH'
+    print(type(Exception))

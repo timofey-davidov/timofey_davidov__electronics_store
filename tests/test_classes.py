@@ -1,5 +1,5 @@
 import pytest
-from classes import Item, Phone, KeyBoard, MixinKeyBoard
+from classes import Item, Phone, KeyBoard, MixinKeyBoard, InstantiateCSVError
 
 
 @pytest.fixture
@@ -71,3 +71,10 @@ def test_KeyBoard(item7):
     assert item7.language == "EN"
     item7.change_lang()
     assert item7.language == "RU"
+
+def test_errors():
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv("items_wrongfile.csv")
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv("tests/items_2.csv")
+
